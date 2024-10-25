@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {Vm} from "forge-std/Vm.sol";
+import {console} from "forge-std/console.sol";
 import {ForkHelper} from "../utils/ForkHelper.sol";
 
 library SafeWallet {
@@ -61,6 +62,7 @@ library SafeWallet {
     bytes memory data
   ) internal returns (bytes memory res) {
     Vm vm = Vm(address(uint160(uint256(keccak256("hevm cheat code")))));
+    console.log("data length: ", data.length);
 
     string[] memory inputs = new string[](16);
     inputs[0] = "node";
@@ -79,6 +81,10 @@ library SafeWallet {
     inputs[13] = "--rpc";
     inputs[14] = ForkHelper.getRpcUrl(chainId);
     inputs[15] = "--silent";
+
+    for (uint256 i = 0; i < inputs.length; i++) {
+      console.log(inputs[i], " ");
+    }
 
     res = vm.ffi(inputs);
   }

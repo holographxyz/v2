@@ -94,8 +94,6 @@ contract ProtocolContractsDeployScript is Script, Logger {
       bytes20 secret = bytes20(deploymentSalt); // Extract the first 20 bytes
       bytes12 saltHash = bytes12(deploymentSalt << 160); // Extract the first 12 bytes
 
-      console.log("Safe Wallet: ", safeWallet);
-
       // Deploy the new layerZeroV2Module using the holographGenesis contract
       if (safeWallet != address(0)) {
         if (isSafeSignerLedger) {
@@ -149,6 +147,38 @@ contract ProtocolContractsDeployScript is Script, Logger {
         vm.stopBroadcast();
       }
     }
+  }
+
+  function getHolographGenesisCalldata(bytes memory bytecode, bytes memory initcode) public returns (address) {
+    loadProtocolContracts();
+
+    logHlgDeployerMessage(
+      string(abi.encodePacked("Holograph genesis address: ", (vm.toString(address(holographGenesis)))))
+    );
+
+    // TODO: set it based on the HOLOGRAPH_ENVIRONMENT
+    bytes32 deploymentSalt = vm.envOr("DEPLOYMENT_SALT", bytes32(0));
+    // Divide the salt into saltHash (bytes12) and secret (bytes20)
+    bytes20 secret = bytes20(deploymentSalt); // Extract the first 20 bytes
+    bytes12 saltHash = bytes12(deploymentSalt << 160); // Extract the first 12 bytes
+
+    logHlgDeployerMessage(
+      string(
+        abi.encodePacked(
+          "calldata: ",
+          vm.toString(abi.encodeWithSignature(
+            "deploy(uint256,bytes12,bytes20,bytes,bytes)",
+            block.chainid,
+            saltHash,
+            secret,
+            bytecode,
+            initcode
+          ))
+        )
+      )
+    );
+
+    return address(holographGenesis);
   }
 
   /**

@@ -69,6 +69,7 @@ program
       console.log('VALUE:'.green, value.yellow);
       console.log('\n');
 
+
       const proceed = Boolean(
         await prompts.confirm({
           message: 'Do you want to proceed?',
@@ -82,11 +83,6 @@ program
         return;
       }
     }
-    console.log('Connected to the Safe wallet', {
-      provider: rpcUrl,
-      signer: privateKey ? privateKey : ledger,
-      safeAddress: safeAddress,
-    });
 
     const protocolKit = await Safe.init({
       provider: rpcUrl,
@@ -169,6 +165,8 @@ program
             nonce: safeTransaction.data.nonce.toString(),
           },
         };
+
+        console.log('Typed data:', typedData);
 
         // Sign the EIP-712 typed data using the Ledger device
         const sig = await eth.signEIP712Message(derivationPath, typedData);
