@@ -120,6 +120,7 @@ contract HolographGenesis {
   address private immutable deployer4 = 0xDF9013a9Af763b181EF8acFC0e3229494004e001;
   address private immutable deployer5 = 0x00Ac9Fd50C63f176B49F05FfedA324bD68C7cD69;
   address private immutable deployer6 = 0xfFc178694Ea206E10F2314A3a9661fdA41FE486D;
+  address private immutable deployer7 = 0xa4F88bC984084D0bf8e6F9499FC9F7CB908e44B4;
 
   // Mapping of addresses that are approved deployers
   mapping(address => bool) private _approvedDeployers;
@@ -147,6 +148,7 @@ contract HolographGenesis {
     _approvedDeployers[deployer4] = true;
     _approvedDeployers[deployer5] = true;
     _approvedDeployers[deployer6] = true;
+    _approvedDeployers[deployer7] = true;
 
     emit Message("The future is Holographic");
   }

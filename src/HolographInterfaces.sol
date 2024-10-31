@@ -146,7 +146,7 @@ contract HolographInterfaces is Admin, Initializable {
    * @param initPayload abi encoded payload to use for contract initilaization
    */
   function init(bytes memory initPayload) external override returns (bytes4) {
-    require(!_isInitialized(), "HOLOGRAPH: already initialized");
+    require(!_isInitialized(), "HOLOGRAPH: already initializedd");
     address contractAdmin = abi.decode(initPayload, (address));
     assembly {
       sstore(_adminSlot, contractAdmin)

@@ -43,6 +43,8 @@ contract ProtocolContractsDeployScript is Script, Logger {
     bytes memory initcode,
     uint256[] calldata chainIds
   ) public {
+    logHlgDeployerMessage(vm.toString(chainIds[0]));
+
     uint256 deployerPrivateKey = uint256(_deployerPrivateKey);
 
     if (safeWallet != address(0)) {
@@ -53,7 +55,7 @@ contract ProtocolContractsDeployScript is Script, Logger {
       currentWallet = vm.addr(deployerPrivateKey);
     }
 
-    if (ledgerSafeSigner == address(0) && safeSignerPrivateKey == bytes32(0)) {
+    if (deployerPrivateKey == 0 && ledgerSafeSigner == address(0) && safeSignerPrivateKey == bytes32(0)) {
       revert("Either ledgerSafeSigner or safeSignerPrivateKey must be set");
     }
 
@@ -68,7 +70,7 @@ contract ProtocolContractsDeployScript is Script, Logger {
       ForkHelper.forkByChainId(chainIds[i]);
 
       // Broadcast transaction with deployer private key
-      if (safeWallet == address(0)) {
+      if (safeWallet != address(0)) {
         vm.startBroadcast(hardwareWallet);
       } else if (safeWallet == address(0)) {
         vm.startBroadcast(deployerPrivateKey);
@@ -130,6 +132,10 @@ contract ProtocolContractsDeployScript is Script, Logger {
         // Start recording emitted events
         vm.recordLogs();
 
+        if (implem != address(0)) {
+          initcode = abi.encode(implem, initcode);
+        }
+
         holographGenesis.deploy(block.chainid, saltHash, secret, bytecode, initcode);
 
         // Retrive the deployed contract address from the emitted events
@@ -144,12 +150,13 @@ contract ProtocolContractsDeployScript is Script, Logger {
             )
           )
         );
+
         vm.stopBroadcast();
       }
     }
   }
 
-  function getHolographGenesisCalldata(bytes memory bytecode, bytes memory initcode) public returns (address) {
+  function getHolographGenesisCalldata(bytes memory bytecode, bytes memory initcode, uint256 chainId) public returns (address) {
     loadProtocolContracts();
 
     logHlgDeployerMessage(
@@ -166,14 +173,16 @@ contract ProtocolContractsDeployScript is Script, Logger {
       string(
         abi.encodePacked(
           "calldata: ",
-          vm.toString(abi.encodeWithSignature(
-            "deploy(uint256,bytes12,bytes20,bytes,bytes)",
-            block.chainid,
-            saltHash,
-            secret,
-            bytecode,
-            initcode
-          ))
+          vm.toString(
+            abi.encodeWithSignature(
+              "deploy(uint256,bytes12,bytes20,bytes,bytes)",
+              chainId,
+              saltHash,
+              secret,
+              bytecode,
+              initcode
+            )
+          )
         )
       )
     );
