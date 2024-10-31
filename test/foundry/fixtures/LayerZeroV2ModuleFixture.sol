@@ -121,7 +121,8 @@ contract LayerZeroV2ModuleFixture is Test {
       EndpointPeer[] memory peers = new EndpointPeer[](chainIds.length);
       address futurLayerZeroModule = DeploymentHelper.computeGenesisDeploymentAddress(
         deploymentSalt,
-        type(LayerZeroModuleProxyV2).creationCode
+        type(LayerZeroModuleProxyV2).creationCode,
+        address(holographGenesis)
       );
       for (uint256 j = 0; j < chainIds.length; j++) {
         peers[j] = EndpointPeer({peer: futurLayerZeroModule, eid: DeploymentHelper.getEndpointId(chainIds[j])});
@@ -188,7 +189,7 @@ contract LayerZeroV2ModuleFixture is Test {
         holographInterfaces.updateChainIdMap(
           ChainIdType.HOLOGRAPH,
           chainIds[j],
-          ChainIdType.LAYERZERO,
+          ChainIdType.LAYERZEROV2,
           DeploymentHelper.getEndpointId(chainIds[j])
         );
       }
