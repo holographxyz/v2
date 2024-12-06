@@ -955,7 +955,7 @@ packages:
       '@ledgerhq/errors': 6.16.4
       '@ledgerhq/hw-transport': 6.30.6
       '@ledgerhq/logs': 6.12.0
-      node-hid: github.com/holographxyz/node-hid/99e7e3d3c4a8a4190f60332ac191949ccb2a5dd4
+      node-hid: git@github.com+holographxyz/node-hid/99e7e3d3c4a8a4190f60332ac191949ccb2a5dd4
 
   /@ledgerhq/hw-transport-node-hid@6.28.6:
     resolution: {integrity: sha512-USSTOO0zv9XtguWismP7/StnNS/s7Rz0JOGGaBhKe3Bzl7d5XPncUlmOvoNFzzY/QdasEoFs2QId1+ibJG71Vw==}
@@ -966,7 +966,7 @@ packages:
       '@ledgerhq/hw-transport-node-hid-noevents': 6.29.6
       '@ledgerhq/logs': 6.12.0
       lodash: 4.17.21
-      node-hid: github.com/holographxyz/node-hid/99e7e3d3c4a8a4190f60332ac191949ccb2a5dd4
+      node-hid: git@github.com+holographxyz/node-hid/99e7e3d3c4a8a4190f60332ac191949ccb2a5dd4
       usb: 2.9.0
 
   /@ledgerhq/hw-transport@6.30.6:
@@ -3831,8 +3831,8 @@ packages:
       - encoding
     dev: false
 
-  /cross-spawn@6.0.5:
-    resolution: {integrity: sha512-eTVLrBSt7fjbDygz805pMnstIs2VTBNkRm0qxZd+M7A5XDdxVRWO5MxGBXZhjY4cqLYLdtrGqRf8mBPmzwSpWQ==}
+  /cross-spawn@6.0.6:
+    resolution: {integrity: sha512-VqCUuhcd1iB+dsv8gxPttb5iZh/D0iubSP21g36KXdEuf6I5JiioesUVjpCdHV9MZRUfVFlvwtIUyPfxo5trtw==}
     engines: {node: '>=4.8'}
     dependencies:
       nice-try: 1.0.5
@@ -4902,7 +4902,7 @@ packages:
     resolution: {integrity: sha512-iNZ576iTOGcfllftB73cPB5AN+XUQAT/T8xzsILsghXC1o8gJUqe3RHlcDqagu+biFpYQ61KQrZZJza8eRSYqw==}
     deprecated: Deprecated in favor of '@metamask/eth-sig-util'
     dependencies:
-      ethereumjs-abi: github.com/ethereumjs/ethereumjs-abi/ee3994657fa7a427238e6ba92a84d0b529bbcde0
+      ethereumjs-abi: git@github.com+ethereumjs/ethereumjs-abi/ee3994657fa7a427238e6ba92a84d0b529bbcde0
       ethereumjs-util: 5.2.1
     dev: true
 
@@ -5181,6 +5181,7 @@ packages:
 
   /ethereumjs-wallet@0.6.5:
     resolution: {integrity: sha512-MDwjwB9VQVnpp/Dc1XzA6J1a3wgHQ4hSvA1uWNatdpOrtCbPVuQSKSyRnjLvS0a+KKMw2pvQ9Ybqpb3+eW8oNA==}
+    deprecated: 'New package name format for new versions: @ethereumjs/wallet. Please update.'
     requiresBuild: true
     dependencies:
       aes-js: 3.1.2
@@ -8191,7 +8192,7 @@ packages:
     dependencies:
       '@yarnpkg/lockfile': 1.1.0
       chalk: 2.4.2
-      cross-spawn: 6.0.5
+      cross-spawn: 6.0.6
       find-yarn-workspace-root: 1.2.1
       fs-extra: 7.0.1
       is-ci: 2.0.0
@@ -8212,7 +8213,7 @@ packages:
     dependencies:
       '@yarnpkg/lockfile': 1.1.0
       chalk: 4.1.2
-      cross-spawn: 6.0.5
+      cross-spawn: 6.0.6
       find-yarn-workspace-root: 2.0.0
       fs-extra: 9.1.0
       is-ci: 2.0.0
@@ -11286,7 +11287,7 @@ packages:
     dependencies:
       underscore: 1.9.1
       web3-core-helpers: 1.2.1
-      websocket: github.com/web3-js/WebSocket-Node/ef5ea2f41daf4a2113b80c9223df884b4d56c400
+      websocket: git@github.com+web3-js/WebSocket-Node/ef5ea2f41daf4a2113b80c9223df884b4d56c400
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -11856,8 +11857,8 @@ packages:
   /zod@3.23.8:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 
-  github.com/ethereumjs/ethereumjs-abi/ee3994657fa7a427238e6ba92a84d0b529bbcde0:
-    resolution: {tarball: https://codeload.github.com/ethereumjs/ethereumjs-abi/tar.gz/ee3994657fa7a427238e6ba92a84d0b529bbcde0}
+  git@github.com+ethereumjs/ethereumjs-abi/ee3994657fa7a427238e6ba92a84d0b529bbcde0:
+    resolution: {commit: ee3994657fa7a427238e6ba92a84d0b529bbcde0, repo: git@github.com:ethereumjs/ethereumjs-abi.git, type: git}
     name: ethereumjs-abi
     version: 0.6.8
     dependencies:
@@ -11865,8 +11866,8 @@ packages:
       ethereumjs-util: 6.2.1
     dev: true
 
-  github.com/holographxyz/node-hid/99e7e3d3c4a8a4190f60332ac191949ccb2a5dd4:
-    resolution: {tarball: https://codeload.github.com/holographxyz/node-hid/tar.gz/99e7e3d3c4a8a4190f60332ac191949ccb2a5dd4}
+  git@github.com+holographxyz/node-hid/99e7e3d3c4a8a4190f60332ac191949ccb2a5dd4:
+    resolution: {commit: 99e7e3d3c4a8a4190f60332ac191949ccb2a5dd4, repo: git@github.com:holographxyz/node-hid.git, type: git}
     name: node-hid
     version: 2.2.0
     engines: {node: '>=10'}
@@ -11877,8 +11878,8 @@ packages:
       node-addon-api: 3.2.1
       prebuild-install: 7.1.2
 
-  github.com/web3-js/WebSocket-Node/ef5ea2f41daf4a2113b80c9223df884b4d56c400:
-    resolution: {tarball: https://codeload.github.com/web3-js/WebSocket-Node/tar.gz/ef5ea2f41daf4a2113b80c9223df884b4d56c400}
+  git@github.com+web3-js/WebSocket-Node/ef5ea2f41daf4a2113b80c9223df884b4d56c400:
+    resolution: {commit: ef5ea2f41daf4a2113b80c9223df884b4d56c400, repo: git@github.com:web3-js/WebSocket-Node.git, type: git}
     name: websocket
     version: 1.0.29
     engines: {node: '>=0.10.0'}
