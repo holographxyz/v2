@@ -112,6 +112,10 @@ import "../interface/HolographERC20Interface.sol";
  * @dev The entire logic and functionality of the smart contract is self-contained.
  */
 contract SampleERC20 is StrictERC20H {
+  /// @notice Getter for the init payload
+  /// @dev This storage variable is set only once in the init and can be considered as immutable
+  bytes private INIT_PAYLOAD;
+
   /**
    * @dev Just a dummy value for now to test transferring of data.
    */
@@ -133,11 +137,21 @@ contract SampleERC20 is StrictERC20H {
    * @param initPayload abi encoded payload to use for contract initilaization
    */
   function init(bytes memory initPayload) external override returns (bytes4) {
+    // Store the init payload
+    INIT_PAYLOAD = initPayload;
+
     // do your own custom logic here
     address contractOwner = abi.decode(initPayload, (address));
     _setOwner(contractOwner);
     // run underlying initializer logic
     return _init(initPayload);
+  }
+
+  /**
+   * @notice Getter for the CountdownERC721Initializer init payload
+   */
+  function getInitProperties() external view returns (address) {
+    return abi.decode(INIT_PAYLOAD, (address));
   }
 
   /**

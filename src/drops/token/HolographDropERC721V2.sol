@@ -166,6 +166,10 @@ contract HolographDropERC721V2 is NonReentrant, ERC721H, IHolographDropERC721V2 
    */
   mapping(address => uint256) public totalMintsByAddress;
 
+  /// @notice Getter for the init payload
+  /// @dev This storage variable is set only once in the init and can be considered as immutable
+  bytes private INIT_PAYLOAD;
+
   /**
    * CUSTOM ERRORS
    */
@@ -225,6 +229,9 @@ contract HolographDropERC721V2 is NonReentrant, ERC721H, IHolographDropERC721V2 
   function init(bytes memory initPayload) external override returns (bytes4) {
     require(!_isInitialized(), "HOLOGRAPH: already initialized");
 
+    // Store the init payload
+    INIT_PAYLOAD = initPayload;
+
     DropsInitializerV2 memory initializer = abi.decode(initPayload, (DropsInitializerV2));
 
     // Setup the owner role
@@ -271,6 +278,13 @@ contract HolographDropERC721V2 is NonReentrant, ERC721H, IHolographDropERC721V2 
 
   function supportsInterface(bytes4 interfaceId) external pure override returns (bool) {
     return interfaceId == type(IHolographDropERC721V2).interfaceId;
+  }
+
+  /**
+   * @notice Getter for the DropsInitializerV2 init payload
+   */
+  function getInitProperties() external view returns (DropsInitializerV2 memory) {
+    return abi.decode(INIT_PAYLOAD, (DropsInitializerV2));
   }
 
   /**

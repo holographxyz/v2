@@ -115,6 +115,10 @@ import "../interface/HolographerInterface.sol";
  * @dev The entire logic and functionality of the smart contract is self-contained.
  */
 contract HolographUtilityToken is HLGERC20H {
+  /// @notice Getter for the init payload
+  /// @dev This storage variable is set only once in the init and can be considered as immutable
+  bytes private INIT_PAYLOAD;
+
   /**
    * @dev Constructor is left empty and init is used instead
    */
@@ -126,6 +130,9 @@ contract HolographUtilityToken is HLGERC20H {
    * @param initPayload abi encoded payload to use for contract initilaization
    */
   function init(bytes memory initPayload) external override returns (bytes4) {
+    // Store the init payload
+    INIT_PAYLOAD = initPayload;
+
     (address contractOwner, uint256 tokenAmount, uint256 targetChain, address tokenRecipient) = abi.decode(
       initPayload,
       (address, uint256, uint256, address)
@@ -149,5 +156,12 @@ contract HolographUtilityToken is HLGERC20H {
    */
   function isHLG() external pure returns (bool) {
     return true;
+  }
+
+  /**
+   * @notice Getter for the CountdownERC721Initializer init payload
+   */
+  function getInitProperties() external view returns (address, uint256, uint256, address) {
+    return abi.decode(INIT_PAYLOAD, (address, uint256, uint256, address));
   }
 }

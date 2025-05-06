@@ -138,7 +138,7 @@ contract HolographERC721 is Admin, Owner, HolographERC721Interface, Initializabl
    * @dev bytes32(uint256(keccak256('eip1967.Holograph.sourceContract')) - 1)
    */
   bytes32 constant _sourceContractSlot = 0x27d542086d1e831d40b749e7f5509a626c3047a36d160781c40d5acc83e5b074;
-
+  
   /**
    * @dev Configuration for events to trigger for source smart contract.
    */
@@ -254,6 +254,7 @@ contract HolographERC721 is Admin, Owner, HolographERC721Interface, Initializabl
     _symbol = contractSymbol;
     _bps = contractBps;
     _eventConfig = eventConfig;
+
     if (!skipInit) {
       require(sourceContract.init(initCode) == InitializableInterface.init.selector, "ERC721: could not init source");
       (bool success, bytes memory returnData) = _royalties().delegatecall(

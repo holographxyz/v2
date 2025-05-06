@@ -6,11 +6,8 @@ import {ERC721H} from "../abstract/ERC721H.sol";
 import {NonReentrant} from "../abstract/NonReentrant.sol";
 
 import {HolographERC721Interface} from "../interface/HolographERC721Interface.sol";
-import {HolographerInterface} from "../interface/HolographerInterface.sol";
-import {HolographInterface} from "../interface/HolographInterface.sol";
 import {ICountdownERC721} from "../interface/ICountdownERC721.sol";
 import {IDropsPriceOracle} from "../drops/interface/IDropsPriceOracle.sol";
-import {HolographTreasuryInterface} from "../interface/HolographTreasuryInterface.sol";
 
 import {AddressMintDetails} from "../drops/struct/AddressMintDetails.sol";
 import {CountdownERC721Initializer} from "src/struct/CountdownERC721Initializer.sol";
@@ -19,7 +16,6 @@ import {CustomERC721SalesConfiguration} from "src/struct/CustomERC721SalesConfig
 import {MetadataParams} from "src/struct/MetadataParams.sol";
 
 import {Address} from "../drops/library/Address.sol";
-import {MerkleProof} from "../drops/library/MerkleProof.sol";
 import {Strings} from "./../drops/library/Strings.sol";
 import {NFTMetadataRenderer} from "../library/NFTMetadataRenderer.sol";
 
@@ -63,6 +59,10 @@ contract CountdownERC721 is NonReentrant, ERC721H, ICountdownERC721 {
   /// @notice Getter for the minter
   /// @dev This account tokens on behalf of those that purchase them offchain
   address public minter;
+
+  /// @notice Getter for the init payload
+  /// @dev This storage variable is set only once in the init and can be considered as immutable
+  bytes private INIT_PAYLOAD;
 
   /* -------------------------------------------------------------------------- */
   /*                             METADATA VARAIBLES                             */
@@ -188,6 +188,9 @@ contract CountdownERC721 is NonReentrant, ERC721H, ICountdownERC721 {
       sstore(_holographerSlot, caller())
     }
 
+    // Store the init payload
+    INIT_PAYLOAD = initPayload;
+
     // Decode the initializer payload to get the CountdownERC721Initializer struct
     CountdownERC721Initializer memory initializer = abi.decode(initPayload, (CountdownERC721Initializer));
 
@@ -284,6 +287,13 @@ contract CountdownERC721 is NonReentrant, ERC721H, ICountdownERC721 {
 
   function supportsInterface(bytes4 interfaceId) external pure override returns (bool) {
     return interfaceId == type(ICountdownERC721).interfaceId;
+  }
+
+  /**
+   * @notice Getter for the CountdownERC721Initializer init payload
+   */
+  function getInitProperties() external view returns (CountdownERC721Initializer memory) {
+    return abi.decode(INIT_PAYLOAD, (CountdownERC721Initializer));
   }
 
   /* -------------------------------------------------------------------------- */

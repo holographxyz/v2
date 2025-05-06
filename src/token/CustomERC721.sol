@@ -62,6 +62,10 @@ contract CustomERC721 is NonReentrant, ContractMetadata, InitializableLazyMint, 
   /// @notice Getter for the end date
   uint256 public END_DATE;
 
+  /// @notice Getter for the init payload
+  /// @dev This storage variable is set only once in the init and can be considered as immutable
+  bytes private INIT_PAYLOAD;
+
   /// @notice Getter for the minter
   /// @dev This account tokens on behalf of those that purchase them offchain
   address public minter;
@@ -144,6 +148,9 @@ contract CustomERC721 is NonReentrant, ContractMetadata, InitializableLazyMint, 
    */
   function init(bytes memory initPayload) external override returns (bytes4) {
     require(!_isInitialized(), "HOLOGRAPH: already initialized");
+
+    // Store the init payload
+    INIT_PAYLOAD = initPayload;
 
     // Enable sourceExternalCall to work on init, we set holographer here since it's only set after init
     assembly {
@@ -291,6 +298,13 @@ contract CustomERC721 is NonReentrant, ContractMetadata, InitializableLazyMint, 
 
   function isAdmin(address user) external view returns (bool) {
     return (_getOwner() == user);
+  }
+
+  /**
+   * @notice Getter for the CustomERC721Initializer init payload
+   */
+  function getInitProperties() external view returns (CustomERC721Initializer memory) {
+    return abi.decode(INIT_PAYLOAD, (CustomERC721Initializer));
   }
 
   /**

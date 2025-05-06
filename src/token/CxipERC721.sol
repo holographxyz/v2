@@ -117,6 +117,10 @@ import "../interface/HolographerInterface.sol";
  * @dev The entire logic and functionality of the smart contract is self-contained.
  */
 contract CxipERC721 is ERC721H {
+  /// @notice Getter for the init payload
+  /// @dev This storage variable is set only once in the init and can be considered as immutable
+  bytes private INIT_PAYLOAD;
+
   /**
    * @dev Internal reference used for minting incremental token ids.
    */
@@ -148,12 +152,22 @@ contract CxipERC721 is ERC721H {
    * @param initPayload abi encoded payload to use for contract initilaization
    */
   function init(bytes memory initPayload) external override returns (bytes4) {
+    // Store the init payload
+    INIT_PAYLOAD = initPayload;
+
     // we set this as default type since that's what Mint is currently using
     _uriType = TokenUriType.IPFS;
     address owner = abi.decode(initPayload, (address));
     _setOwner(owner);
     // run underlying initializer logic
     return _init(initPayload);
+  }
+
+  /**
+   * @notice Getter for the CxipERC721 init payload
+   */
+  function getInitProperties() external view returns (address) {
+    return abi.decode(INIT_PAYLOAD, (address));
   }
 
   /**

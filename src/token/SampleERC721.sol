@@ -112,6 +112,10 @@ import "../interface/HolographERC721Interface.sol";
  * @dev The entire logic and functionality of the smart contract is self-contained.
  */
 contract SampleERC721 is StrictERC721H {
+  /// @notice Getter for the init payload
+  /// @dev This storage variable is set only once in the init and can be considered as immutable
+  bytes private INIT_PAYLOAD;
+  
   /**
    * @dev Mapping of all token URIs.
    */
@@ -138,6 +142,9 @@ contract SampleERC721 is StrictERC721H {
    * @param initPayload abi encoded payload to use for contract initilaization
    */
   function init(bytes memory initPayload) external override returns (bytes4) {
+    // Store the init payload
+    INIT_PAYLOAD = initPayload;
+
     // do your own custom logic here
     address contractOwner = abi.decode(initPayload, (address));
     _setOwner(contractOwner);
@@ -152,6 +159,13 @@ contract SampleERC721 is StrictERC721H {
    */
   function tokenURI(uint256 _tokenId) external view onlyHolographer returns (string memory) {
     return _tokenURIs[_tokenId];
+  }
+
+  /**
+   * @notice Getter for the SampleERC721 init payload
+   */
+  function getInitProperties() external view returns (address) {
+    return abi.decode(INIT_PAYLOAD, (address));
   }
 
   /**
