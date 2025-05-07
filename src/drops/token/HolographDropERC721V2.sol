@@ -410,7 +410,7 @@ contract HolographDropERC721V2 is NonReentrant, ERC721H, IHolographDropERC721V2 
       // The error will display what the correct price should be
       revert Purchase_WrongPrice((salesConfig.publicSalePrice + holographMintFeeUsd) * quantity);
     }
-    uint256 remainder = msg.value - (salePrice * quantity);
+    uint256 remainder = msg.value - (salePrice + holographMintFeeWei) * quantity;
 
     // If max purchase per address == 0 there is no limit.
     // Any other number, the per address mint limit is that.
