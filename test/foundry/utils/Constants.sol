@@ -234,4 +234,16 @@ library ErrorConstants {
   string constant ERC20_ZERO_ADDRESS_SIGNER_ERROR_MSG = "ERC20: zero address signer";
   string constant ERC20_INVALID_V_VALUE_ERROR_MSG = "ERC20: invalid v-value";
   string constant ERC20_INVALID_SIGNATURE_ERROR_MSG = "ERC20: invalid signature";
+  string constant ERC721_ALREADY_INITIALIZED_ERROR_MSG = "ERC721: already initialized";
+  string constant ERC721_INDEX_OUT_OF_BOUNDS_ERROR_MSG = "ERC721: index out of bounds";
+  string constant ERC721_MINTING_TO_BURN_ADDRESS_ERROR_MSG = "ERC721: minting to burn address";
+  string constant ERC721_TOKEN_ALREADY_EXISTS_ERROR_MSG = "ERC721: token already exists";
+  string constant ERC721_CANT_MINT_BURNED_TOKEN_ERROR_MSG = "ERC721: can't mint burned token";
+  string constant ERC721_NOT_APPROVED_SENDER_ERROR_MSG = "ERC721: not approved sender";
+  string constant ERC721_USE_BURN_INSTEAD_ERROR_MSG = "ERC721: use burn instead";
+  string constant ERC721_TOKEN_NOT_OWNED_ERROR_MSG = "ERC721: token not owned";
+  string constant ERC721_TOKEN_NOT_EXISTS_ERROR_MSG = "ERC721: token does not exist";
+  string constant ERC721_onERC721Received_FAIL_ERROR_MSG = "ERC721: onERC721Received fail";
+  string constant ERC721_OPERATOR_NOT_CONTRACT_ERROR_MSG = "ERC721: operator not contract";
+  string constant ERC721_CONTRACT_NOT_TOKEN_OWNER_ERROR_MSG = "ERC721: contract not token owner";
 }
