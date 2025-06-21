@@ -15,4 +15,5 @@ interface ICustomERC721Errors {
   error Sale_Inactive();
   error Access_OnlyMinter();
   error LazyMint_AlreadyInitialized();
+  error HOLOGRAPH_OnlyOwnerFunction();
 }

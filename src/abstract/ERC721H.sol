@@ -118,7 +118,7 @@ abstract contract ERC721H is Initializable {
     _;
   }
 
-  modifier onlyOwner() {
+  modifier onlyOwner() virtual {
     require(msgSender() == _getOwner(), "ERC721: owner only function");
     _;
   }

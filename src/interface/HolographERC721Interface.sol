@@ -167,4 +167,6 @@ interface HolographERC721Interface is
   function tokenURI(uint256 tokenId) external view returns (string memory);
 
   function totalSupply() external view returns (uint256);
+
+  function initOwner(address owner) external;
 }

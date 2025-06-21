@@ -6,13 +6,11 @@ import {ERC721H} from "../abstract/ERC721H.sol";
 import {NonReentrant} from "../abstract/NonReentrant.sol";
 import {DelayedReveal} from "../abstract/DelayedReveal.sol";
 import {ContractMetadata} from "../abstract/ContractMetadata.sol";
+import {InitializableInterface} from "../abstract/Initializable.sol";
 
 import {HolographERC721Interface} from "../interface/HolographERC721Interface.sol";
-import {HolographerInterface} from "../interface/HolographerInterface.sol";
-import {HolographInterface} from "../interface/HolographInterface.sol";
 import {ICustomERC721} from "../interface/ICustomERC721.sol";
 import {IDropsPriceOracle} from "../drops/interface/IDropsPriceOracle.sol";
-import {HolographTreasuryInterface} from "../interface/HolographTreasuryInterface.sol";
 
 import {InitializableLazyMint} from "../extension/InitializableLazyMint.sol";
 
@@ -22,7 +20,6 @@ import {CustomERC721SaleDetails} from "src/struct/CustomERC721SaleDetails.sol";
 import {CustomERC721SalesConfiguration} from "src/struct/CustomERC721SalesConfiguration.sol";
 
 import {Address} from "../drops/library/Address.sol";
-import {MerkleProof} from "../drops/library/MerkleProof.sol";
 import {Strings} from "./../drops/library/Strings.sol";
 
 /**
@@ -210,7 +207,17 @@ contract CustomERC721 is NonReentrant, ContractMetadata, InitializableLazyMint, 
 
     setStatus(1);
 
-    return _init(initPayload);
+    _init(initPayload);
+
+    try HolographERC721Interface(msg.sender).supportsInterface(HolographERC721Interface.initOwner.selector) returns (
+      bool result
+    ) {
+      if (result) {
+        HolographERC721Interface(msg.sender).initOwner(initializer.initialOwner);
+      }
+    } catch {}
+
+    return InitializableInterface.init.selector;
   }
 
   /**

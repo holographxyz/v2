@@ -280,9 +280,9 @@ contract CustomERC721Fixture is Test {
 
     address newCustomERC721Address;
     if (lazyMintsConfigurations.length > 0) {
-      newCustomERC721Address = address(uint160(uint256(entries[2 + lazyMintsConfigurations.length].topics[1])));
+      newCustomERC721Address = address(uint160(uint256(entries[3 + lazyMintsConfigurations.length].topics[1])));
     } else {
-      newCustomERC721Address = address(uint160(uint256(entries[2].topics[1])));
+      newCustomERC721Address = address(uint160(uint256(entries[3].topics[1])));
     }
 
     // Connect the drop implementation to the drop proxy address

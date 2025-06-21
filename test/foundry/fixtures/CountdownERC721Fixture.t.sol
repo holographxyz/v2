@@ -17,10 +17,9 @@ import {CountdownERC721} from "src/token/CountdownERC721.sol";
 
 import {MockUser} from "../utils/MockUser.sol";
 import {Utils} from "../utils/Utils.sol";
-import {CountdownERC721Helper} from "test/foundry/CountdownERC721/utils/Helper.sol";
 
 import {Constants} from "test/foundry/utils/Constants.sol";
-import {DEFAULT_BASE_URI, DEFAULT_BASE_URI_2, DEFAULT_PLACEHOLDER_URI, DEFAULT_PLACEHOLDER_URI_2, DEFAULT_ENCRYPT_DECRYPT_KEY, DEFAULT_ENCRYPT_DECRYPT_KEY_2, DEFAULT_MAX_SUPPLY, DEFAULT_MINT_INTERVAL, DEFAULT_START_DATE} from "test/foundry/CountdownERC721/utils/Constants.sol";
+import {DEFAULT_MINT_INTERVAL, DEFAULT_START_DATE} from "test/foundry/CountdownERC721/utils/Constants.sol";
 
 contract CountdownERC721Fixture is Test {
   /// @notice Event emitted when the funds are withdrawn from the minting contract
@@ -222,7 +221,7 @@ contract CountdownERC721Fixture is Test {
     factory.deployHolographableContract(config, signature, alice); // Pass the payload hash, with the signature, and signer's address
     Vm.Log[] memory entries = vm.getRecordedLogs();
 
-    address newCountdownERC721Address = address(uint160(uint256(entries[2].topics[1])));
+    address newCountdownERC721Address = address(uint160(uint256(entries[3].topics[1])));
 
     // Connect the drop implementation to the drop proxy address
     countdownErc721 = CountdownERC721(payable(newCountdownERC721Address));

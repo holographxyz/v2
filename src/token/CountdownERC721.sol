@@ -4,13 +4,11 @@ pragma solidity 0.8.13;
 
 import {ERC721H} from "../abstract/ERC721H.sol";
 import {NonReentrant} from "../abstract/NonReentrant.sol";
+import {InitializableInterface} from "../abstract/Initializable.sol";
 
 import {HolographERC721Interface} from "../interface/HolographERC721Interface.sol";
-import {HolographerInterface} from "../interface/HolographerInterface.sol";
-import {HolographInterface} from "../interface/HolographInterface.sol";
 import {ICountdownERC721} from "../interface/ICountdownERC721.sol";
 import {IDropsPriceOracle} from "../drops/interface/IDropsPriceOracle.sol";
-import {HolographTreasuryInterface} from "../interface/HolographTreasuryInterface.sol";
 
 import {AddressMintDetails} from "../drops/struct/AddressMintDetails.sol";
 import {CountdownERC721Initializer} from "src/struct/CountdownERC721Initializer.sol";
@@ -19,7 +17,6 @@ import {CustomERC721SalesConfiguration} from "src/struct/CustomERC721SalesConfig
 import {MetadataParams} from "src/struct/MetadataParams.sol";
 
 import {Address} from "../drops/library/Address.sol";
-import {MerkleProof} from "../drops/library/MerkleProof.sol";
 import {Strings} from "./../drops/library/Strings.sol";
 import {NFTMetadataRenderer} from "../library/NFTMetadataRenderer.sol";
 
@@ -131,6 +128,18 @@ contract CountdownERC721 is NonReentrant, ERC721H, ICountdownERC721 {
   /* -------------------------------------------------------------------------- */
   /*                                  MODIFIERS                                 */
   /* -------------------------------------------------------------------------- */
+
+  /**
+   * @notice Allows only the owner to call the function
+   * @dev We use the enforcer contract owner to check if the caller is the owner
+   */
+  modifier onlyOwner() override {
+    address _owner = ERC721H(payable(holographer())).owner();
+    if (msgSender() != _owner) {
+      revert Access_OnlyAdmin();
+    }
+    _;
+  }
 
   /**
    * @notice Allows only the minter to call the function
@@ -265,7 +274,17 @@ contract CountdownERC721 is NonReentrant, ERC721H, ICountdownERC721 {
 
     setStatus(1);
 
-    return _init(initPayload);
+    _init(initPayload);
+
+    try HolographERC721Interface(msg.sender).supportsInterface(HolographERC721Interface.initOwner.selector) returns (
+      bool result
+    ) {
+      if (result) {
+        HolographERC721Interface(msg.sender).initOwner(initializer.initialOwner);
+      }
+    } catch {}
+
+    return InitializableInterface.init.selector;
   }
 
   /* -------------------------------------------------------------------------- */

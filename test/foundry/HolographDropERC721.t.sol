@@ -24,15 +24,15 @@ import {HolographDropERC721V2} from "../../src/drops/token/HolographDropERC721V2
 import {HolographDropERC721Proxy} from "../../src/drops/proxy/HolographDropERC721Proxy.sol";
 
 import {IMetadataRenderer} from "../../src/drops/interface/IMetadataRenderer.sol";
-import {MockMetadataRenderer} from "./metadata/MockMetadataRenderer.sol";
 import {DummyMetadataRenderer} from "./utils/DummyMetadataRenderer.sol";
 import {DropsMetadataRenderer} from "../../src/drops/metadata/DropsMetadataRenderer.sol";
 import {EditionsMetadataRenderer} from "../../src/drops/metadata/EditionsMetadataRenderer.sol";
 
 import {DropsPriceOracleProxy} from "../../src/drops/proxy/DropsPriceOracleProxy.sol";
 import {DummyDropsPriceOracle} from "../../src/drops/oracle/DummyDropsPriceOracle.sol";
+import {IHolographERC721Errors} from "src/interface/IHolographERC721Errors.sol";
 
-contract HolographDropERC721Test is Test {
+contract HolographDropERC721Test is Test, IHolographERC721Errors {
   /// @notice Event emitted when the funds are withdrawn from the minting contract
   /// @param withdrawnBy address that issued the withdraw
   /// @param withdrawnTo address that the funds were withdrawn to
@@ -126,7 +126,9 @@ contract HolographDropERC721Test is Test {
       vm.recordLogs();
       factory.deployHolographableContract(config, signature, alice); // Pass the payload hash, with the signature, and signer's address
       Vm.Log[] memory entries = vm.getRecordedLogs();
-      address newDropAddress = address(uint160(uint256(entries[1].topics[1])));
+
+      // Extract the new drop address from the correct log entry and topic
+      address newDropAddress = address(uint160(uint256(entries[2].topics[1])));
 
       // Connect the drop implementation to the drop proxy address
       holographDropERC721 = HolographDropERC721V2(payable(newDropAddress));
@@ -220,11 +222,12 @@ contract HolographDropERC721Test is Test {
     vm.recordLogs();
     factory.deployHolographableContract(config, signature, alice); // Pass the payload hash, with the signature, and signer's address
     Vm.Log[] memory entries = vm.getRecordedLogs();
-    address newDropAddress = address(uint160(uint256(entries[2].topics[1])));
+    address newDropAddress = address(uint160(uint256(entries[0].topics[1])));
 
     // Connect the drop implementation to the drop proxy address
     holographDropERC721 = HolographDropERC721V2(payable(newDropAddress));
 
+    // Verify the version
     assertEq(holographDropERC721.version(), 2);
   }
 
@@ -901,7 +904,7 @@ contract HolographDropERC721Test is Test {
 
     vm.prank(address(0x1));
     HolographERC721 erc721Enforcer = HolographERC721(payable(address(holographDropERC721)));
-    vm.expectRevert("ERC721: not approved sender");
+    vm.expectRevert(abi.encodeWithSelector(ERC721_NotApprovedSender.selector, address(0x1), FIRST_TOKEN_ID));
     erc721Enforcer.burn(FIRST_TOKEN_ID);
   }
 

@@ -89,7 +89,7 @@ library Constants {
   }
 
   function getHolographERC721() internal pure returns (address) {
-    return address(0x3337B6e8eF94D36D21406c75Fe8d88E74381c071);
+    return address(0xD9c2693665022D5eB0A00330Ec9a9825459aB4C9);
   }
 
   function getCxipERC721Proxy() internal pure returns (address) {
